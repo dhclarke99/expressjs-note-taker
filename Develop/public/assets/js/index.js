@@ -4,15 +4,16 @@ let saveNoteBtn;
 let newNoteBtn;
 let noteList;
 
-const express = require('express');
-const app = express();
+// const express = require('express');
+// const app = express();
 
 if (typeof window !== 'undefined') {
   console.log(window.location.pathname)
 
 
-if (window.location.pathname === '/Develop/public/notes.html') {
+if (window.location.pathname === '/notes.html') {
   noteTitle = document.querySelector('.note-title');
+  console.log(noteTitle)
   noteText = document.querySelector('.note-textarea');
   saveNoteBtn = document.querySelector('.save-note');
   newNoteBtn = document.querySelector('.new-note');
@@ -126,8 +127,8 @@ const handleRenderSaveBtn = () => {
 // Render the list of note titles
 const renderNoteList = async (notes) => {
   let jsonNotes = await notes.json();
-  if (window.location.pathname === '/Develop/public/notes.html') {
-    noteList.forEach((el) => (el.innerHTML = ''));
+  if (window.location.pathname === '/notes.html') {
+    noteList.forEach((el) => el.innerHTML = (''));
   }
 
   let noteListItems = [];
@@ -165,14 +166,15 @@ const renderNoteList = async (notes) => {
     noteListItems.push(createLi('No saved Notes', false));
   }
 
-  jsonNotes.forEach((note) => {
+  console.log(jsonNotes);
+  jsonNotes.forEach(async (note) => {
     const li = createLi(note.title);
     li.dataset.note = JSON.stringify(note);
 
     noteListItems.push(li);
   });
 
-  if (window.location.pathname === '/Develop/public/notes.html') {
+  if (window.location.pathname === '/notes.html') {
     noteListItems.forEach((note) => noteList[0].append(note));
   }
 };
@@ -180,7 +182,7 @@ const renderNoteList = async (notes) => {
 // Gets notes from the db and renders them to the sidebar
 const getAndRenderNotes = () => getNotes().then(renderNoteList);
 
-if (window.location.pathname === '/Develop/public/notes.html') {
+if (window.location.pathname === '/notes.html') {
   saveNoteBtn.addEventListener('click', handleNoteSave);
   newNoteBtn.addEventListener('click', handleNewNoteView);
   noteTitle.addEventListener('keyup', handleRenderSaveBtn);
@@ -189,4 +191,4 @@ if (window.location.pathname === '/Develop/public/notes.html') {
 
 getAndRenderNotes();
 }
-module.exports = app;
+// module.exports = app;
