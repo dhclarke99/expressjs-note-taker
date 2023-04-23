@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const uuid = require('./public/assets/uuid')
 // const api = require('./public/assets/js/index');
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 const app = express();
 
