@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const uuid = require('./public/assets/uuid')
 // const api = require('./public/assets/js/index');
 const PORT = 3001;
 
@@ -43,6 +44,22 @@ app.get('/api/notes', (req, res) => {
     
   });
 
+  app.delete('/api/notes/:id', (req, res) => {
+    console.info(`${req.method} /api/notes`);
+
+    fs.readFile('./db/db.json', "utf8", (err, data)=>{
+        if (err) {
+            console.error(err);
+        } else {
+            const notes = JSON.parse(data);
+
+            return res.status(200).json(notes);
+
+        }
+    })
+    
+  });
+
 app.post('/api/notes', (req, res) => {
     console.info(`${req.method} /api/notes`);
 
@@ -50,6 +67,7 @@ app.post('/api/notes', (req, res) => {
     const newNote = {
         title,
         text,
+        id: uuid(),
     };
 
     fs.readFile('./db/db.json', "utf8", (err, data)=>{
