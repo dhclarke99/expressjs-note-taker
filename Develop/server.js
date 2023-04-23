@@ -45,18 +45,28 @@ app.get('/api/notes', (req, res) => {
   });
 
   app.delete('/api/notes/:id', (req, res) => {
-    console.info(`${req.method} /api/notes`);
+    console.info(`req params`, req.params.id);
 
     fs.readFile('./db/db.json', "utf8", (err, data)=>{
-        if (err) {
+        if (err){
             console.error(err);
         } else {
-            const notes = JSON.parse(data);
-
-            return res.status(200).json(notes);
-
-        }
-    })
+    const notes = JSON.parse(data);
+    const itemIndex = notes.findIndex(({id}) => id === req.params.id);
+    if (itemIndex >= 0) {
+        notes.splice(itemIndex, 1);
+        fs.writeFile(
+            './db/db.json',
+            JSON.stringify(notes, null, 4),
+            (writeErr) =>
+            writeErr
+             ? console.error(writeErr)
+             : console.info('Successfully updated Notes!')
+        );
+    } else {
+        res.status(200).json('error');
+    }
+}});
     
   });
 
