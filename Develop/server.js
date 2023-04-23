@@ -28,10 +28,19 @@ app.get('/notes', (req, res) =>
 );
 
 app.get('/api/notes', (req, res) => {
-    const notes = "hey";
     console.info(`${req.method} /api/notes`);
 
-    res.status(200).json(notes);
+    fs.readFile('./db/db.json', "utf8", (err, data)=>{
+        if (err) {
+            console.error(err);
+        } else {
+            const notes = JSON.parse(data);
+
+            return res.status(200).json(notes);
+
+        }
+    })
+    
   });
 
 app.post('/api/notes', (req, res) => {

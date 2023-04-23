@@ -164,6 +164,8 @@ const renderNoteList = async (notes) => {
 
   if (jsonNotes.length === 0) {
     noteListItems.push(createLi('No saved Notes', false));
+  } else {
+    console.log("notes exist!")
   }
 
   console.log(jsonNotes);
